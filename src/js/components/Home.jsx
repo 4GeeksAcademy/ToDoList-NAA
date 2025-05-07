@@ -1,26 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+let Home = () => {
+	let [todo, setTodo] = useState("");
+	let [list, setList] = useState([]);
 
-//create your first component
-const Home = () => {
+
+	function Del(delChoreplace) {
+		let newList = list.filter((_, choreplace) => choreplace !== delChoreplace);
+		setList(newList);
+	}
+
 	return (
-		<div className="text-center">
-            
-
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div>
+			<form
+				onSubmit={(event) => {
+					event.preventDefault();
+					if (todo.trim() === "") return;
+					setList([...list, todo]);
+					setTodo("");
+				}}
+			>
+				<p className="d-flex justify-content-center title">My To Dos</p>
+				<div className="card">
+					<input
+						type="text"
+						placeholder="Please write a To Do"
+						value={todo}
+						onChange={(event) => setTodo(event.target.value)}
+					/>
+					<ul>
+						{list.map((chore, choreplace) => (
+							<li key={choreplace} className="listformat">
+								{chore}
+								<button
+									type="button"
+									className="btn-close float-end"
+									onClick={() => Del(choreplace)}>
+								</button>
+							</li>
+						))}
+						<li className="listformat">{list.length} To Dos left</li>
+					</ul>
+				</div>
+			</form>
 		</div>
 	);
 };
